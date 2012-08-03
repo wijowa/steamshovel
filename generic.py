@@ -3,6 +3,18 @@ Created on Jun 7, 2012
 
 Library for data mining and piling
 
+Geo Tools:
+    get_lat_long(location) from Google maps api
+    Location(location) from Yahoo placefinder api
+    
+Data tools:
+    JsonDocument(file) / JsonUrl(Url) Json encoded file/urls, accessible as Python datatypes
+    XmlDocument(file) / XmlUrl(Url) XML encoded file/urls, accessible as Python objects
+    XlsDocument(file) XLS (pre-2003 Excel) spreadsheet interface, accessible as list of Python dicts
+    
+Piling tools:
+    SqliteTable  - pile data into SQlite tables
+    
 @author: Williqm
 '''
 import sqlite3
