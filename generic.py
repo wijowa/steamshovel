@@ -19,6 +19,16 @@ db = sqlite3.connect('tables.db')
 
 
 def get_lat_long(location):
+    '''
+        returns tuple of latitude and longitude from a given location description string
+        for example, an address
+        results from the google geolocation api
+        You have to get a Google api key here:
+        https://developers.google.com/maps/signup
+        and put the key into the "key" variable below
+        see also:  the reverse geocoder provided by Yahoo Placefinder in the Location class
+        (possible integration opportunity of this method into Location class)
+    '''
     key = ""
     output = "csv"
     location = urllib.quote_plus(location)
@@ -69,6 +79,7 @@ class Document:
         return self.file.read()
 
 class Url(Document):
+    ''' a Document type that reads from a URL instead of a file'''
     url=''
     file=None
     def __init__(self,url):
@@ -135,6 +146,7 @@ class XlsTable(Document):
         self._coltypes = [[str,str,self.xlsfloat,self.xlsdate][v] for v in self.sheet.row_types(self.start_row)]
         
 class JsonDocument(Document):    
+    ''' a Json encoded document '''
     @property
     def value(self):
         return json.loads(self.file.read())
@@ -217,6 +229,7 @@ class XmlElement():
         return self.value    
     
 class XmlDocument(Document):
+    ''' an XML encoded document'''
     dom=None
     @property
     def value(self):
@@ -288,10 +301,13 @@ class Location(XmlUrl):
             40.702690
             >>> l.longitude
             -73.942430
+        Get a yahoo placefinder api key here:
+        http://developer.yahoo.com/geo/placefinder/
+        place it into the _appid variable below
             
     '''
     _url='http://where.yahooapis.com/geocode'
-    _appid='WZzPGD5i'
+    _appid=''
     location = ''
     def __init__(self, location):
         self.location=location
@@ -315,6 +331,10 @@ class CensusTable(XlsTable):
 
      
 class SQLiteTable(object):
+    ''' This is a wrapper for SQlite specializing in data piling.  
+    Step 1: create a table by initializing
+        >>> table = SQLiteTable('tablename',['id','name','value'],['int','str','text'],db)
+    '''
     name=None
     python_to_sql = {'str':'VARCHAR(255)',
              'text':'TEXT',
